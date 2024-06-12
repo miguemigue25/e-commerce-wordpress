@@ -11,7 +11,7 @@ export default function Hero() {
                     <span className="text-primary">Mexican Food</span>!
                 </h1>
                 <p className="my-4 text-gray-500">
-                    Authentic mexican food just like grandma cooked it including with the hints of love.
+                    Authentic mexican food just like grandma cooked it including with hints of love.
                 </p>
                 <div className="flex ">
                     <button className="bg-primary uppercase leading-10 text-white px-8 py-2 rounded-full">
