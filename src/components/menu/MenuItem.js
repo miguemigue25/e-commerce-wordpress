@@ -9,7 +9,7 @@ export default function MenuItem() {
                 sf sfsfs fs sdfasfaege sfasfafawswf sfsefsf
                 fvdsvfsdfsf sfsefsf sfafsaf sfsfsdf sefsef.
             </p>
-            <button className="bg-white text-black mt-4 rounded-full px-8 py-2 hover:bg-primary hover:text-black">
+            <button className="bg-white text-black mt-4 rounded-full px-8 py-2 hover:text-black hover:border-2 hover:border-black">
                 Add to cart $12
             </button>
         </div>

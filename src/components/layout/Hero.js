@@ -14,7 +14,7 @@ export default function Hero() {
                     Authentic mexican food just like grandma cooked it including with hints of love.
                 </p>
                 <div className="flex ">
-                    <button className="bg-primary uppercase leading-10 text-white px-8 py-2 rounded-full">
+                    <button className="bg-primary uppercase leading-10 text-white px-8 py-2 rounded-full max-w-xs">
                         Check Our Menu
                     </button>
                 </div>
