@@ -4,8 +4,12 @@ import Link from "next/link";
 
 export default function Header() {
     const session = useSession();
-    console.log(session);
-    const status = session.status;
+    const status = session?.status;
+    const userData = session.data?.user;
+    let userName = userData?.name || userData?.email;
+    if (userName && userName.includes(' ')) {
+        userName = userName.split(' ')[0];
+    }
 
     return (
         <header className="flex items-center justify-between">
@@ -13,7 +17,7 @@ export default function Header() {
                 <Link href={"/"} className="flex text-primary font-semibold text-3xl text-center">
                     CARNITA&apos;S<br />
                     <div className="flex items-center">
-                        <span className="text-2xl">&nbsp;Mexican Restaurant</span>
+                        <span className="text-xl text-primary">&nbsp;Mexican Restaurant</span>
                     </div>
                 </Link>
                 <Link href={'/'} className="hover:text-primary hover:text-xl">&nbsp;&nbsp;Home</Link>
@@ -23,10 +27,16 @@ export default function Header() {
             </nav>
             <nav className="flex items-center gap-6">
                 {status === 'authenticated' && (
-                    <button onClick={() => signOut()}
-                        className="bg-primary rounded-full text-white px-8 py-2">
-                        Logout
-                    </button>
+                    <>
+                        <Link className="whitespace-nowrap" href={'/profile'}>
+                            Hello {userName}!
+                            </Link>
+                        <button onClick={() => signOut()}
+                            className="bg-primary rounded-full text-white px-8 py-2">
+                            Logout
+                        </button>
+                    </>
+
                 )}
                 {status !== 'authenticated' && (
                     <>
