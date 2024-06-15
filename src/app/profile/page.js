@@ -3,8 +3,6 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
-import InfoBox from "@/components/layout/InfoBox";
-import SuccessBox from "@/components/layout/SuccessBox";
 import toast from "react-hot-toast";
 
 
@@ -12,12 +10,26 @@ export default function ProfilePage() {
     const session = useSession();
     const [userName, setUserName] = useState('');
     const [image, setImage] = useState('');
+    const [phone, setPhone] = useState('');
+    const [streetAddress, setStreetAddress] = useState('');
+    const [zipCode, setZipCode] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
     const { status } = session;
 
     useEffect(() => {
         if (status === 'authenticated') {
             setUserName(session.data.user.name);
             setImage(session.data.user.image);
+            fetch('/api/profile').then(response => {
+                response.json().then(data => {
+                    setPhone(data.phone);
+                    setStreetAddress(data.streetAddress);
+                    setZipCode(data.zipCode);
+                    setCity(data.city);
+                    setState(data.state);
+                })
+            });
         }
     }, [session, status])
 
@@ -28,7 +40,15 @@ export default function ProfilePage() {
             const response = await fetch('/api/profile', {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: userName, image }),
+                body: JSON.stringify({ 
+                    name: userName, 
+                    image,
+                    streetAddress,
+                    phone,
+                    zipCode,
+                    city,
+                    state,
+                 }),
             });
             if (response.ok)
                 resolve()
@@ -84,7 +104,7 @@ export default function ProfilePage() {
                 Profile
             </h1>
             <div className="max-w-md mx-auto">
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-4">
                     <div>
                         <div className="p-2 rounded-lg relative max-w-[120px]">
                             {image && (
@@ -100,6 +120,18 @@ export default function ProfilePage() {
                         <input type="text" placeholder="First and Last Name"
                             value={userName} onChange={e => setUserName(e.target.value)} />
                         <input type="email" disabled={true} value={session.data.user.email} />
+                        <input type="tel" placeholder="Phone Number"
+                            value={phone} onChange={e => setPhone(e.target.value)} />
+                        <input type="text" placeholder="Street Address"
+                            value={streetAddress} onChange={e => setStreetAddress(e.target.value)} />
+                        <input type="text" placeholder="City"
+                            value={city} onChange={e => setCity(e.target.value)} />
+                        <div className="flex gap-2">
+                            <input type="text" placeholder="State"
+                                value={state} onChange={e => setState(e.target.value)} />
+                            <input type="text" placeholder="Zip Code"
+                                value={zipCode} onChange={e => setZipCode(e.target.value)} />
+                        </div>
                         <button type="submit">Save</button>
                     </form>
                 </div>
