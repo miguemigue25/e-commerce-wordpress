@@ -1,9 +1,11 @@
 "use client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import UserTabs from "@/components/layout/UserTabs";
 
 
 export default function ProfilePage() {
@@ -15,12 +17,15 @@ export default function ProfilePage() {
     const [zipCode, setZipCode] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [profileFetched, setProfileFetched] = useState(false);
     const { status } = session;
 
     useEffect(() => {
         if (status === 'authenticated') {
             setUserName(session.data.user.name);
             setImage(session.data.user.image);
+            
             fetch('/api/profile').then(response => {
                 response.json().then(data => {
                     setPhone(data.phone);
@@ -28,6 +33,8 @@ export default function ProfilePage() {
                     setZipCode(data.zipCode);
                     setCity(data.city);
                     setState(data.state);
+                    setIsAdmin(data.admin);
+                    setProfileFetched(true);
                 })
             });
         }
@@ -40,15 +47,15 @@ export default function ProfilePage() {
             const response = await fetch('/api/profile', {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    name: userName, 
+                body: JSON.stringify({
+                    name: userName,
                     image,
                     streetAddress,
                     phone,
                     zipCode,
                     city,
                     state,
-                 }),
+                }),
             });
             if (response.ok)
                 resolve()
@@ -89,7 +96,7 @@ export default function ProfilePage() {
         }
     }
 
-    if (status === 'loading') {
+    if (status === 'loading' || !profileFetched) {
         return 'Loading...';
     }
 
@@ -100,10 +107,8 @@ export default function ProfilePage() {
 
     return (
         <section className="mt-8">
-            <h1 className="text-center text-primary text-4xl mb-4">
-                Profile
-            </h1>
-            <div className="max-w-md mx-auto">
+            <UserTabs isAdmin={isAdmin} />
+            <div className="max-w-md mx-auto mt-4">
                 <div className="flex gap-4">
                     <div>
                         <div className="p-2 rounded-lg relative max-w-[120px]">
