@@ -38,7 +38,7 @@ export default function CategoriesPage() {
             setCategoryName('');
             fetchCategories();
             setEditedCategory(null);
-            
+
             if (response.ok)
                 resolve();
             else
@@ -53,6 +53,25 @@ export default function CategoriesPage() {
                 : 'Category created',
             error: 'Error, sorry...',
         });
+    }
+
+    async function handleDeleteClick(_id) {
+        const promise = new Promise(async (resolve, reject) => {
+            const response = await fetch('/api/categories?_id=' + _id, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                resolve();
+            } else {
+                reject();
+            }
+        });
+        await toast.promise(promise, {
+            loading: 'Deleting...',
+            success: 'Deleted',
+            error: 'Error',
+        });
+        fetchCategories();
     }
 
     if (profileLoading) {
@@ -87,16 +106,29 @@ export default function CategoriesPage() {
                 </div>
             </form>
             <div>
-                <h2 className="mt-8 text-sm text-gray-600">Edit category:</h2>
+                <h2 className="mt-8 text-sm px-4 text-gray-600">Existing Categories:</h2>
                 {categories?.length > 0 && categories.map(c => (
-                    <button key={c._id}
-                        onClick={() => {
-                            setEditedCategory(c);
-                            setCategoryName(c.name);
-                        }}
-                        className="bg-gray-100 rounded-xl p-2 px-4 flex gap-2 cursor-pointer mb-2 hover:border-2 hover:border-blue-500">
-                        <span>{c.name}</span>
-                    </button>
+                    <div key={c._id}
+                        className="bg-white rounded-xl p-2 px-4 flex gap-2 mb-2">
+                        <div className="grow justify-center cursor-pointer border p-2 px-4 flex rounded-xl border-blue-500 hover:underline">
+                            {c.name}
+                        </div>
+                        <div className="flex gap-1">
+                            <button type="button"
+                                onClick={() => {
+                                    setEditedCategory(c);
+                                    setCategoryName(c.name);
+                                }}
+                            >
+                                Edit
+                            </button>
+                            <button type="button"
+                                onClick={() => handleDeleteClick(c._id)}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
                 ))}
             </div>
         </section>
