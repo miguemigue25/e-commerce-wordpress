@@ -1,6 +1,6 @@
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps";
 import EditableImage from "@/components/layout/EditableImage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function MenuItemForm({ onSubmit, menuItem }) {
@@ -10,12 +10,23 @@ export default function MenuItemForm({ onSubmit, menuItem }) {
     const [basePrice, setBasePrice] = useState(menuItem?.basePrice || '');
     const [sides, setSides] = useState(menuItem?.sides || []);
     const [drinks, setDrinks] = useState(menuItem?.drinks || []);
+    const [category, setCategory] = useState(menuItem?.category || '');
+    const [categories, setCategories] = useState([]);
     const [extraIngredientPrices, setExtraIngredientPrices] = useState(menuItem?.extraIngredientPrices || []);
 
 
+    useEffect(() => {
+        fetch('/api/categories').then(res => {
+            res.json().then(categories => {
+                setCategories(categories);
+            });
+        });
+    }, []);
+
+
     return (
-        <form onSubmit={e => onSubmit(e, { image, name, description, basePrice, sides, drinks, extraIngredientPrices })}
-            className="mt-8 max-w-md mx-auto">
+        <form onSubmit={e => onSubmit(e, { image, name, description, basePrice, sides, drinks, extraIngredientPrices, category })}
+            className="mt-8 max-w-xl mx-auto">
             <div className="grid items-start gap-2"
                 style={{ gridTemplateColumns: '.3fr .7fr' }}>
                 <div>
@@ -32,6 +43,12 @@ export default function MenuItemForm({ onSubmit, menuItem }) {
                         value={description}
                         onChange={e => setDescription(e.target.value)}
                     />
+                    <label>Category</label>
+                    <select value={category} onChange={e => setCategory(e.target.value)}>
+                        {categories?.length > 0 && categories.map(c => (
+                            <option key={c._id} value={c._id}>{c.name}</option>
+                        ))}
+                    </select>
                     <label>Base Price</label>
                     <input type="text"
                         value={basePrice}
@@ -52,7 +69,7 @@ export default function MenuItemForm({ onSubmit, menuItem }) {
                         props={drinks}
                         setProps={setDrinks}
                     />
-                    <button type="submit">Save</button>
+                    <button className=" font-light" type="submit">Save</button>
                 </div>
             </div>
         </form>

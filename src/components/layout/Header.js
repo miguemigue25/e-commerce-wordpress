@@ -13,7 +13,7 @@ export default function Header() {
 
     return (
         <header className="flex items-center justify-between">
-            <nav className="flex items-center gap-4 text-black font-semibold">
+            <nav className="flex items-center gap-4 text-black font-medium">
                 <Link href={"/"} className="flex text-primary font-semibold text-3xl text-center">
                     CARNITA&apos;S<br />
                     <div className="flex items-center">
@@ -32,7 +32,7 @@ export default function Header() {
                             Hello {userName}!
                             </Link>
                         <button onClick={() => signOut()}
-                            className="bg-primary rounded-full text-white px-8 py-2">
+                            className="bg-primary rounded-full text-white px-8 py-2 font-light">
                             Logout
                         </button>
                     </>

@@ -7,7 +7,7 @@ section.hero {
     @apply grid;
     grid-template-columns: .4fr .6fr;
 }
-
+select,
 input[type="email"],
 input[type="password"],
 input[type="tel"],
@@ -37,7 +37,7 @@ button[type="submit"]:disabled, .submit:disabled {
 }
 
 div.tabs > * {
-    @apply bg-gray-300 text-black rounded-full py-2 px-4 border-2 border-blue-600;
+    @apply bg-blue-400 text-black rounded-full py-2 px-4 border-2 border-blue-600;
 }
 
 div.tabs > *.active {

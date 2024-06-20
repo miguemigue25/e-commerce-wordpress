@@ -1,4 +1,5 @@
 "use client";
+import DeleteButton from "@/components/DeleteButton";
 import UserTabs from "@/components/layout/UserTabs";
 import { useProfile } from "@/components/UseProfile";
 import { useEffect, useState } from "react";
@@ -83,12 +84,12 @@ export default function CategoriesPage() {
     }
 
     return (
-        <section className="mt-8 max-w-lg mx-auto">
+        <section className="mt-8 max-w-xl mx-auto">
             <UserTabs isAdmin={true} />
             <form className="mt-8" onSubmit={handleCategorySubmit}>
                 <div className="flex gap-2 items-end">
                     <div className="grow">
-                        <label>
+                        <label className="px-3">
                             {editedCategory ? 'Update category' : 'New category name'}
                             {editedCategory && (
                                 <>: <b>{editedCategory.name}</b></>
@@ -98,23 +99,31 @@ export default function CategoriesPage() {
                             onChange={e => setCategoryName(e.target.value)}
                         />
                     </div>
-                    <div className="pb-2">
-                        <button type="submit">
+                    <div className="pb-2 flex gap-2">
+                        <button type="submit" className="font-light">
                             {editedCategory ? 'Update' : 'Create'}
+                        </button>
+                        <button type="button" onClick={() => {
+                            setEditedCategory(null);
+                            setCategoryName('');
+                        }}
+                            className="bg-blue-500 text-white font-light"
+                        >
+                            Cancel
                         </button>
                     </div>
                 </div>
             </form>
             <div>
-                <h2 className="mt-8 text-sm px-4 text-gray-600">Existing Categories:</h2>
+                <h2 className="mt-8 text-sm px-3 text-gray-600">Existing Categories:</h2>
                 {categories?.length > 0 && categories.map(c => (
                     <div key={c._id}
-                        className="bg-white rounded-xl p-2 px-4 flex gap-2 mb-2">
-                        <div className="grow justify-center cursor-pointer border p-2 px-4 flex rounded-xl border-blue-500 hover:underline">
+                        className="bg-white rounded-xl px-1 flex gap-2 mb-2">
+                        <div className="grow justify-center border p-2 px-4 flex rounded-xl border-blue-500 hover:underline">
                             {c.name}
                         </div>
-                        <div className="flex gap-1">
-                            <button type="button"
+                        <div className="flex gap-2">
+                            <button className=" font-medium" type="button"
                                 onClick={() => {
                                     setEditedCategory(c);
                                     setCategoryName(c.name);
@@ -122,11 +131,14 @@ export default function CategoriesPage() {
                             >
                                 Edit
                             </button>
-                            <button type="button"
+                            {/* <button type="button"
                                 onClick={() => handleDeleteClick(c._id)}
+                                className="bg-red-500 text-white font-light"
                             >
                                 Delete
-                            </button>
+                            </button> */}
+                            <DeleteButton label="Delete" 
+                                onDelete={() => handleDeleteClick(c._id)} />
                         </div>
                     </div>
                 ))}
