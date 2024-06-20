@@ -32,7 +32,7 @@ export default function MenuItemsPage() {
             <UserTabs isAdmin={true} />
             <div className="mt-8">
                 <Link
-                    className="button flex"
+                    className="button flex hover:border-2 hover:border-blue-600"
                     href={'/menu-items/new'}
                 >
                     <span>Create new menu item</span>
