@@ -19,10 +19,10 @@ export default function HomeMenu() {
         <section className="my-6">
             <div className="absolute left-0 right-0 w-full justify-start">
                 <div className="absolute left-0 -top-[70px] text-left -z-10 rounded-xl">
-                    <Image src={'/green_salsa.png'} width={225} height={200} alt={''} />
+                    <Image src={'/green_salsa.png'} width={400} height={400} alt={''} />
                 </div>
                 <div className="absolute -top-[70px] right-0 -z-10 rounded-xl">
-                    <Image src={'/red_salsa.png'} width={225} height={200} alt={''} />
+                    <Image src={'/red_salsa.png'} width={400} height={400} alt={''} />
                 </div>
             </div>
             <div className="text-center mb-8">
