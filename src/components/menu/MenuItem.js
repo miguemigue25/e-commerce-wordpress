@@ -12,12 +12,14 @@ export default function MenuItem(MenuItem) {
     const [selectedDrink, setSelectedDrink] = useState(drinks?.[0] || null);
 
     function handleAddToCartButtonClick() {
-        if (sides.length === 0 && extraIngredientPrices.length === 0) {
-            addToCart(MenuItem);
-            toast.success('Added to cart!');
-        } else {
-            setShowPopup(true);
-        }
+        const hasOptions = drinks.length > 0 || sides.length > 0;
+        if (hasOptions && !showPopup) {
+           setShowPopup(true);
+           return;
+        } 
+        addToCart(MenuItem, selectedDrink, selectedSide);
+        setShowPopup(false);
+        toast.success('Added to cart!');
     }
 
     function handleSideClick(e, side) {
@@ -26,16 +28,29 @@ export default function MenuItem(MenuItem) {
             setSelectedSides(prev => [...prev, side]);
         } else {
             setSelectedSides(prev => {
-                return prev.filter(e => e.name !== side.name);
+                return prev.filter(e => e._id !== side._id);
             })
+        }
+    }
+
+    let selectedPrice = basePrice;
+    if (selectedDrink) {
+        selectedPrice += selectedDrink.price;
+    }
+
+    if (selectedSide?.length > 0) {
+        for (const extra of selectedSide) {
+            selectedPrice += extra.price
         }
     }
 
     return (
         <>
             {showPopup && (
-                <div className="fixed inset-0 bg-black/80 flex items-center justify-center">
-                    <div className="bg-white my-8 p-2 rounded-lg max-w-md">
+                <div onClick={() => setShowPopup(false)}
+                    className="fixed inset-0 bg-black/80 flex items-center justify-center">
+                    <div onClick={e => e.stopPropagation()}
+                        className="bg-white my-8 p-2 rounded-lg max-w-md">
                         <div className="p-2 overflow-y-scroll" style={{ maxHeight: 'calc(100vh - 100px)' }}>
                             <Image
                                 src={image} alt={name}
@@ -45,42 +60,43 @@ export default function MenuItem(MenuItem) {
                             <p className="text-center text-sm text-gray-700 mb-2">
                                 {description}
                             </p>
+                            {drinks?.length > 0 && (
+                                <div className="text-center mb-2">
+                                    <h3 className="font-thin uppercase">Pick a drink</h3>
+                                    {drinks.map(drink => (
+                                        <label key={drink._id} className="flex items-center px-5 gap-2 p-3 mb-1 border rounded-md">
+                                            <input
+                                                type="radio"
+                                                name="drink"
+                                                onChange={() => setSelectedDrink(drink)}
+                                                checked={selectedDrink?._id === drink._id} />
+                                            {drink.name} ${drink.price}
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
                             {sides?.length > 0 && (
                                 <div className="text-center p-2 mb-2">
-                                    <h3 className=" font-thin">Pick a side</h3>
+                                    <h3 className="uppercase font-thin">Any sides?</h3>
                                     {sides.map(side => (
                                         <label key={side._id} className="flex items-center px-5 gap-2 p-3 mb-1 border rounded-md">
                                             <input
                                                 type="checkbox"
                                                 name="side"
-                                                onChange={() => handleSideClick(side)}
+                                                onChange={(e) => handleSideClick(e, side)}
                                                 checked={selectedSide.map(e => e._id).includes(side._id)} />
                                             {side.name} ${side.price}
                                         </label>
                                     ))}
                                 </div>
                             )}
-                            {drinks?.length > 0 && (
-                                <div className="text-center mb-2">
-                                    <h3 className=" font-thin
-                                ">Pick a drink</h3>
-                                    {drinks.map(drink => (
-                                        <label key={drink._id} className="flex items-center px-5 gap-2 p-3 mb-1 border rounded-md">
-                                            <input 
-                                            type="radio" 
-                                            name="drink" 
-                                            onChange={() => setSelectedDrink(drink)} 
-                                            checked={selectedDrink?.name === drink.name}/>
-                                            {drink.name} ${drink.price}
-                                        </label>
-                                    ))}
-                                </div>
-                            )}
                             <button type="button">
-                                Add to cart &quot;selected price&quot;
+                                Add to cart ${selectedPrice}
+                            </button>
+                            <button className="mt-2 bg-red-600 text-white font-light" onClick={() => setShowPopup(false)}>
+                                Cancel
                             </button>
                         </div>
-
                     </div>
                 </div>
             )}
