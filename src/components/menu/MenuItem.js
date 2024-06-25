@@ -150,6 +150,7 @@ export default function MenuItem(MenuItem) {
             selectedPrice += extra.price;
         }
     }
+    selectedPrice = selectedPrice.toFixed(2);
 
     return (
         <>
@@ -192,7 +193,7 @@ export default function MenuItem(MenuItem) {
                                                 name="side"
                                                 onChange={(e) => handleSideClick(e, side)}
                                                 checked={selectedSides.map(s => s._id).includes(side._id)} />
-                                            {side.name} ${side.price}
+                                            {side.name} ${side.price.toFixed(2)}
                                         </label>
                                     ))}
                                 </div>

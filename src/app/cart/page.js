@@ -31,6 +31,7 @@ export default function CartPage() {
     for (const p of cartProducts) {
         total += cartProductPrice(p);
     }
+    total = total.toFixed(2);
 
     function handleAddressChange(propName, value) {
         setAddress(prevAddress => ({ ...prevAddress, [propName]: value }));
@@ -65,14 +66,14 @@ export default function CartPage() {
                                         Sides:
                                         {product.sides.map(side => (
                                             <div className="text-gray-500" key={side._id}>
-                                                &nbsp;&nbsp;{side.name} ${side.price}
+                                                &nbsp;&nbsp;{side.name} ${side.price.toFixed(2)}
                                             </div>
                                         ))}
                                     </div>
                                 )}
                             </div>
                             <div className="text-lg font-semibold">
-                                ${cartProductPrice(product)}
+                                ${cartProductPrice(product).toFixed(2)}
                             </div>
                             <div className="ml-2">
                                 <button className="p-2"
