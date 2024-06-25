@@ -2,6 +2,7 @@
 import EditableImage from "@/components/layout/EditableImage";
 import { useProfile } from "@/components/UseProfile";
 import { useState } from "react";
+import AddressInputs from "@/components/layout/AddressInputs";
 
 export default function UserForm({ user, onSave }) {
     const [userName, setUserName] = useState(user?.name || '');
@@ -13,6 +14,14 @@ export default function UserForm({ user, onSave }) {
     const [state, setState] = useState(user?.state || '');
     const [admin, setAdmin] = useState(user?.admin || false);
     const { data: loggedInUserData } = useProfile();
+
+    function handleAddressChange(propName, value) {
+        if (propName === 'phone') setPhone(value);
+        if (propName === 'streetAddress') setStreetAddress(value);
+        if (propName === 'zipCode') setZipCode(value);
+        if (propName === 'city') setCity(value);
+        if (propName === 'state') setState(value);
+    }
 
     return (
         <div className="flex gap-4">
@@ -28,18 +37,9 @@ export default function UserForm({ user, onSave }) {
                 <input type="text" placeholder="First and Last Name"
                     value={userName} onChange={e => setUserName(e.target.value)} />
                 <input type="email" disabled={true} value={user.email} />
-                <input type="tel" placeholder="Phone Number"
-                    value={phone} onChange={e => setPhone(e.target.value)} />
-                <input type="text" placeholder="Street Address"
-                    value={streetAddress} onChange={e => setStreetAddress(e.target.value)} />
-                <input type="text" placeholder="City"
-                    value={city} onChange={e => setCity(e.target.value)} />
-                <div className="flex gap-2">
-                    <input type="text" placeholder="State"
-                        value={state} onChange={e => setState(e.target.value)} />
-                    <input type="text" placeholder="Zip Code"
-                        value={zipCode} onChange={e => setZipCode(e.target.value)} />
-                </div>
+                <AddressInputs 
+                addressProps={{phone, streetAddress, zipCode, city, state}}
+                setAddressProps={handleAddressChange}/>
                 {loggedInUserData.admin && (
                     <div>
                         <label className="p-2 flex gap-2 items-center mb-2" htmlFor="adminCb">
