@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
 import { useProfile } from "@/components/UseProfile";
+import toast from "react-hot-toast";
 
 
 export default function CartPage() {
@@ -36,6 +37,34 @@ export default function CartPage() {
     function handleAddressChange(propName, value) {
         setAddress(prevAddress => ({ ...prevAddress, [propName]: value }));
     }
+
+    async function proceedToCheckout(e) {
+        e.preventDefault();
+
+        const promise = new Promise((resolve, reject) => {
+            fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    address,
+                    cartProducts,
+                }),
+            }).then(async (response) => {
+                if (response.ok) {
+                    resolve();
+                    window.location = await response.json();
+                } else {
+                    reject();
+                }
+            });
+        });
+        await toast.promise(promise, {
+            loading: 'Preparing your order...',
+            success: 'Redirecting to payment...',
+            error: 'Something went wrong...Please try again later',
+        })
+    }
+    // console.log({cartProducts});
 
     return (
         <section className="mt-8">
@@ -91,8 +120,10 @@ export default function CartPage() {
                 </div>
                 <div className="border mt-2 text-center border-blue-500 rounded-xl bg-gray-100 p-4 max-h-[34vh]">
                     <h2>Checkout</h2>
-                    <form className="mt-4">
-                        <AddressInputs addressProps={address} setAddressProps={handleAddressChange} />
+                    <form onSubmit={proceedToCheckout} className="mt-4">
+                        <AddressInputs
+                            addressProps={address}
+                            setAddressProps={handleAddressChange} />
                         <button type="submit" className=" font-light bottom mt-2">
                             Pay ${total}
                         </button>
