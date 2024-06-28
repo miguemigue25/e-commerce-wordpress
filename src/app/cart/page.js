@@ -7,12 +7,21 @@ import Trash from "@/components/icons/Trash";
 import AddressInputs from "@/components/layout/AddressInputs";
 import { useProfile } from "@/components/UseProfile";
 import toast from "react-hot-toast";
+import CartProduct from "@/components/menu/CartProduct";
 
 
 export default function CartPage() {
     const { cartProducts, removeCartProduct } = useContext(CartContext);
     const [address, setAddress] = useState({});
     const { data: profileData } = useProfile();
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if (window.location.href.includes('canceled=1')) {
+                toast.error('Payment failed 😔')
+            }
+        }
+    }, []);
 
     useEffect(() => {
         if (profileData?.city) {
@@ -64,6 +73,15 @@ export default function CartPage() {
             error: 'Something went wrong...Please try again later',
         })
     }
+
+    if (cartProducts?.length === 0) {
+        return (
+            <section className="mt-8 text-center">
+                <SectionHeaders mainHeader="Cart" />
+                <p className="mt-4">Your shopping cart is empty</p>
+            </section>
+        );
+    }
     // console.log({cartProducts});
 
     return (
@@ -77,41 +95,9 @@ export default function CartPage() {
                         <div>No products in your shopping cart</div>
                     )}
                     {cartProducts?.length > 0 && cartProducts.map((product, index) => (
-                        <div className="flex items-center gap-4 mb-2 border-b py-2" key={index}>
-                            <div className="max-w-20">
-                                <Image className="rounded-lg" width={200} height={200} src={product.image} alt={''} />
-                            </div>
-                            <div className="grow">
-                                <h3 className=" font-sans">
-                                    {product.name}
-                                </h3>
-                                {product.size && (
-                                    <div className="text-sm">
-                                        Drink: <span>{product.drink}</span>
-                                    </div>
-                                )}
-                                {product.sides?.length > 0 && (
-                                    <div className="text-sm">
-                                        Sides:
-                                        {product.sides.map(side => (
-                                            <div className="text-gray-500" key={side._id}>
-                                                &nbsp;&nbsp;{side.name} ${side.price.toFixed(2)}
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="text-lg font-semibold">
-                                ${cartProductPrice(product).toFixed(2)}
-                            </div>
-                            <div className="ml-2">
-                                <button className="p-2"
-                                    onClick={() => removeCartProduct(index)}
-                                    type="button">
-                                    <Trash />
-                                </button>
-                            </div>
-                        </div>
+                        <CartProduct key={index}
+                            product={product}
+                            onRemove={removeCartProduct} />
                     ))}
                     <div className="py-2 text-right pr-16">
                         Total:
