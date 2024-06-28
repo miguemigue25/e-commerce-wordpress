@@ -37,7 +37,7 @@ export default function OrderPage() {
     }
 
     return (
-        <section className="max-w-xl mx-auto text-center mt-8">
+        <section className="max-w-2xl mx-auto text-center mt-8">
             <div className="text-center">
                 <SectionHeaders mainHeader="Your order" />
                 <div className="mt-4 mb-8">

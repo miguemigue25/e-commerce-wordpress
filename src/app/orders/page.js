@@ -36,7 +36,7 @@ export default function OrdersPage() {
                 {orders?.length > 0 && orders.map(order => (
                     <div
                         key={order._id}
-                        className="border border-blue-500 mb-2 p-4 rounded-lg flex flex-col md:flex-row items-center gap-6">
+                        className="border border-blue-500 mb-2 p-4 rounded-xl flex flex-col md:flex-row items-center gap-6">
                         <div className="grow flex flex-col md:flex-row items-center gap-6">
                             <div>
                                 <div className={

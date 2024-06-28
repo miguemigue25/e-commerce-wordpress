@@ -4,7 +4,7 @@ import { cartProductPrice } from "@/components/AppContext";
 
 export default function CartProduct({ product, onRemove }) {
     return (
-        <div className="flex items-center gap-4 mb-2 border-b py-2" key={index}>
+        <div className="flex items-center gap-4 mb-2 border-b py-2">
             <div className="max-w-20">
                 <Image className="rounded-lg" width={200} height={200} src={product.image} alt={''} />
             </div>
