@@ -17,7 +17,7 @@ export default function HomeMenu() {
 
     return (
         <section className="my-6">
-            <div className="absolute left-0 right-0 w-full justify-start">
+            <div className="absolute left-0 right-0 w-full justify-start hidden md:block">
                 <div className="absolute left-0 -top-[70px] text-left -z-10 rounded-xl">
                     <Image src={'/green_salsa.png'} width={400} height={400} alt={''} />
                 </div>

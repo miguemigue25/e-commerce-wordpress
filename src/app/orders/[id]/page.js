@@ -49,14 +49,14 @@ export default function OrderPage() {
                 <div>Loading Order...</div>
             )}
             {order && (
-                <div className="grid grid-cols-2 gap-16">
+                <div className="grid gap-8 md:grid-cols-2 md:gap-16">
                     <div>
                         {order.cartProducts.map(product => (
                             <CartProduct key={product._id} product={product} />
                         ))}
                         <div className="text-right py-2">
                             Total: 
-                            <span className="font-semibold inline-block w-8">${total}</span>
+                            <span className="font-semibold inline-block w-8 mr-5">${total.toFixed(2)}</span>
                         </div>
                     </div>
                     <div>

@@ -24,7 +24,7 @@ export default function UserForm({ user, onSave }) {
     }
 
     return (
-        <div className="flex gap-4">
+        <div className="md:flex gap-4">
             <div>
                 <div className="p-2 rounded-lg relative max-w-[120px]">
                     <EditableImage link={image} setLink={setImage} />
@@ -32,14 +32,19 @@ export default function UserForm({ user, onSave }) {
             </div>
             <form className="grow"
                 onSubmit={e => onSave(e, {
-                    name: userName, image, phone, streetAddress, city, state, zipCode, admin
+                    name: userName, image, phone,
+                    streetAddress, city, state, zipCode, admin
                 })}>
-                <input type="text" placeholder="First and Last Name"
-                    value={userName} onChange={e => setUserName(e.target.value)} />
-                <input type="email" disabled={true} value={user.email} />
-                <AddressInputs 
-                addressProps={{phone, streetAddress, zipCode, city, state}}
-                setAddressProps={handleAddressChange}/>
+                <input type="text"
+                    placeholder="First and Last Name"
+                    value={userName}
+                    onChange={e => setUserName(e.target.value)} />
+                <input type="email"
+                    disabled={true}
+                    value={user.email} />
+                <AddressInputs
+                    addressProps={{ phone, streetAddress, zipCode, city, state }}
+                    setAddressProps={handleAddressChange} />
                 {loggedInUserData.admin && (
                     <div>
                         <label className="p-2 flex gap-2 items-center mb-2" htmlFor="adminCb">
