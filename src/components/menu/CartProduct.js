@@ -21,7 +21,7 @@ export default function CartProduct({ product, onRemove, index }) {
                     <div className="text-sm">
                         Sides:
                         {product.sides.map(side => (
-                            <div className="text-gray-500" key={side._id}>
+                            <div className="text-gray-500" key={side.name}>
                                 &nbsp;&nbsp;{side.name} ${side.price.toFixed(2)}
                             </div>
                         ))}
