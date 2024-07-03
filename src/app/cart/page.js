@@ -105,7 +105,7 @@ export default function CartPage() {
                         <span className="text-lg font-semibold pl-2">${total}</span>
                     </div>
                 </div>
-                <div className="border mt-2 text-center border-blue-500 rounded-xl bg-gray-100 p-4 max-h-[34vh]">
+                <div className="border mt-2 text-center border-blue-500 rounded-xl bg-gray-100 p-4 md:max-h-[34vh]">
                     <h2>Checkout</h2>
                     <form onSubmit={proceedToCheckout} className="mt-4">
                         <AddressInputs

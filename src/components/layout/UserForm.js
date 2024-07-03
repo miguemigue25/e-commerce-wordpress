@@ -25,12 +25,12 @@ export default function UserForm({ user, onSave }) {
 
     return (
         <div className="md:flex gap-4">
-            <div>
+            <div className="flex justify-center md:block">
                 <div className="p-2 rounded-lg relative max-w-[120px]">
                     <EditableImage link={image} setLink={setImage} />
                 </div>
             </div>
-            <form className="grow"
+            <form className="grow my-20 md:my-2"
                 onSubmit={e => onSave(e, {
                     name: userName, image, phone,
                     streetAddress, city, state, zipCode, admin

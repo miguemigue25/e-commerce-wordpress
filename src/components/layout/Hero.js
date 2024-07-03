@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
     return (
         <section className="hero md:mt-4">
-            <div className="py-8 md:py-12">
+            <div className="py-8 md:py-12 text-center md:text-left">
                 <h1 className="text-4xl font-semibold">
                     Everything<br />
                     is better<br />
@@ -13,10 +14,10 @@ export default function Hero() {
                 <p className="my-4 text-gray-500">
                     Authentic mexican food just like grandma cooked it including with hints of love.
                 </p>
-                <div className="flex ">
-                    <button className="bg-primary uppercase leading-10 text-white px-8 py-2 rounded-full max-w-[250px]">
+                <div className="flex justify-center md:justify-start">
+                    <Link href={'/menu'} className="bg-primary uppercase leading-10 text-white px-8 py-2 rounded-full max-w-[250px]">
                         Check Our Menu
-                    </button>
+                    </Link>
                 </div>
             </div>
             <div className="relative hidden md:block">
